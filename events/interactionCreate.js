@@ -1,3 +1,5 @@
+const PermsChecker = require('../util/PermsChecker');
+
 module.exports = {
     name: "interactionCreate",
     async run (client, interaction) {
@@ -10,6 +12,8 @@ module.exports = {
         if (interaction.isCommand()) {
             const cmd = client.slashcommands.get(interaction.commandName);
             if (!cmd) return interaction.followUp({ content: "An error has occurred using this command." });
+
+            if (!await PermsChecker(interaction, cmd)) return;
 
             const args = [];
 

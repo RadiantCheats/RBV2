@@ -27,7 +27,7 @@ module.exports = {
             .setCustomId('helpmenu')
             .setPlaceholder('Select a category')
             .addOptions(
-                await client.slashcategories.map((category) => {
+                await client.slashcategories.filter((c) => !["developer", "owner"].includes(c)).map((category) => {
                     return {
                         label: `${client.customEmojis[category]} ${category.charAt(0).toUpperCase() + category.slice(1)}`,
                         value: `${category}`,

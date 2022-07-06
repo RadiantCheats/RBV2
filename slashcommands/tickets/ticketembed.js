@@ -4,6 +4,7 @@ module.exports = {
     name: 'ticketembed',
     description: 'Configure the embed for the ticket panel.',
     type: 'CHAT_INPUT',
+    perms: ['MANAGE_GUILD'],
     options: [
         {
             name: 'title',

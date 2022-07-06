@@ -1,4 +1,6 @@
-const { Modal, TextInputComponent, MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { Modal, TextInputComponent, MessageEmbed, MessageActionRow, MessageButton, MessageAttachment } = require('discord.js');
+const moment = require('moment');
+const WebTranscript = require('../../util/WebTranscript');
 
 module.exports = async (client, interaction, data) => {
     const mod = data.guild.modules.tickets;
@@ -169,7 +171,37 @@ module.exports = async (client, interaction, data) => {
         if (!mod.transcriptChannel) {
             return interaction.error("There was no transcript channel for me to send the transcript to! Please set this up with the settings command!")
         } else {
-            return interaction.error("Transcripts are being worked on.")
+            let ticketMessages = await (interaction.channel.messages.cache.toJSON()).reverse();
+            let msgs = "";
+            try {
+                ticketMessages.forEach((msg) => {
+                    const attachments = [];
+                    msg.attachments.forEach((attachment) => {
+                        attachments.push(attachment.url)
+                    })
+                    msgs += `[${msg.author.username}#${msg.author.discriminator}]: ${msg.content || `${attachments.length > 0 ? `(${attachments.length} file${attachments.length === 1 ? 's' : ''}: ` + attachments.join(' | ') + ")" : '(Embeds cannot be displayed.)'}`}\n`
+                })
+            } catch {}
+            
+            const embed = new MessageEmbed()
+                .setTitle(`Ticket Transcript`)
+                .setURL(await WebTranscript(client, interaction, data))
+                .addFields(
+                    { name: `Owner`, value: `<@${(mod.collection[interaction.channel.id]).owner}>`, inline: true },
+                    { name: `Channel`, value: `${interaction.channel.name}`, inline: true },
+                    { name: `Created`, value: `${moment(mod.collection[interaction.channel.id].created).format('LLLL')}`, inline: true },
+                    { name: `Reason`, value: `\`${mod.collection[interaction.channel.id].reason}\``, inline: true },
+                )
+                .setFooter({ text: `Ticket #${mod.collection[interaction.channel.id].num}`, iconURL: `${interaction.guild.iconURL()}` })
+                .setColor(client.config.color)
+            const file = new MessageAttachment()
+                .setName("TicketTranscript")
+                .setSpoiler(true)
+                .setFile(Buffer.from(msgs), "TicketTranscript.txt")
+    
+            const transcriptChannel = await interaction.guild.channels.cache.get(mod.transcriptChannel);
+            await transcriptChannel?.send({ files: [file], embeds: [embed] })
+            return await interaction.success(`Transcript sent to the transcript channel.`)
         }
     }
     if (interaction.customId.startsWith('ticketdelete')) {

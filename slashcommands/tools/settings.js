@@ -2,6 +2,7 @@ module.exports = {
     name: "settings",
     description: "Configure the bot's settings.",
     type: 'CHAT_INPUT',
+    perms: ['MANAGE_GUILD'],
     options: [
         {
             name: "module",

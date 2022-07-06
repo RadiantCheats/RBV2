@@ -4,6 +4,7 @@ module.exports = {
     name: 'ticketpanel',
     description: 'Send the ticket panel in a channel.',
     type: 'CHAT_INPUT',
+    perms: ['MANAGE_GUILD'],
     options: [
         {
             name: 'channel',
@@ -19,6 +20,9 @@ module.exports = {
 
         const embed = data.guild.modules.tickets.panel.embed
         if (!embed) return interaction.error("The ticket panel embed has not been set.");
+
+        if (!data.guild.modules.tickets.staff) return interaction.error("The staff role has not been set.");
+        if (!data.guild.modules.tickets.category) return interaction.error("The tickets category has not been set.");
 
         const row = new MessageActionRow().addComponents(
             new MessageButton()

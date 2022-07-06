@@ -13,7 +13,7 @@ module.exports = async (client, interaction, data) => {
                         .setStyle('SHORT')
                         .setMinLength(1)
                         .setMaxLength(100)
-                        .setPlaceholder(`Role ID | Current: ${data.guild.modules.tickets.staffRole ? (await client.resolveRole(interaction.guild.id, data.guild.modules.tickets.staffRole)).name : 'None'}`)
+                        .setPlaceholder(`Role ID | Current: ${data.guild.modules.tickets.staffRole ? (await client.resolveRole(interaction.guild.id, data.guild.modules.tickets.staff)).name : 'None'}`)
                         .setRequired(true)
             ]}),
             new MessageActionRow({
@@ -35,7 +35,7 @@ module.exports = async (client, interaction, data) => {
                         .setStyle('SHORT')
                         .setMinLength(1)
                         .setMaxLength(100)
-                        .setPlaceholder(`Transcripts Channel ID | Current: ${data.guild.modules.tickets.transcriptChannel ? (await client.resolveChannel(interaction.guild.id, data.guild)).name : 'None'}`)
+                        .setPlaceholder(`Transcripts Channel ID | Current: ${data.guild.modules.tickets.transcriptChannel ? (await client.resolveChannel(interaction.guild.id, data.guild.modules.tickets.transcriptChannel)).name : 'None'}`)
                         .setRequired(false)
             ]})
         )
@@ -58,7 +58,7 @@ module.exports = async (client, interaction, data) => {
 
         data.guild.modules.tickets.staff = role;
         data.guild.modules.tickets.category = category;
-        data.guild.modules.tickets.transcriptChannel ? data.guild.modules.tickets.transcriptChannel = channel : data.guild.modules.tickets.transcriptChannel = null;
+        if (channel) data.guild.modules.tickets.transcriptChannel = channel;
         data.guild.markModified("modules.tickets");
         await data.guild.save();
 
