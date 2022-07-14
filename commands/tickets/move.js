@@ -22,19 +22,19 @@ module.exports = {
         switch (args[0]) {
             case 'low': {
                 const category = data.guild.modules.tickets.category;
-                await interaction.channel.setParent(category);
+                await interaction.channel.setParent(category, { lockPermissions: false });
                 return interaction.success(`This ticket has been moved to low priority.`);
             }
             case 'medium': {
                 const category = await interaction.guild.channels.cache.find(c => c.name === 'middle' && c.type === 'GUILD_CATEGORY');
                 if (!category) return interaction.error('Could not find the middle priority category.');
-                await interaction.channel.setParent(category);
+                await interaction.channel.setParent(category, { lockPermissions: false });
                 return interaction.success(`This ticket has been moved to medium priority.`);
             }
             case 'high': {
                 const category = await interaction.guild.channels.cache.find(c => c.name === 'high' && c.type === 'GUILD_CATEGORY');
                 if (!category) return interaction.error('Could not find the high priority category.');
-                await interaction.channel.setParent(category);
+                await interaction.channel.setParent(category, { lockPermissions: false });
                 return interaction.success(`This ticket has been moved to high priority.`);
             }
         }
