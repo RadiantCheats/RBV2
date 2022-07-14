@@ -14,7 +14,6 @@ module.exports = async (client, interaction, data) => {
                         .setMinLength(1)
                         .setMaxLength(100)
                         .setPlaceholder(`Role ID | Current: ${data.guild.modules.tickets.staffRole ? (await client.resolveRole(interaction.guild.id, data.guild.modules.tickets.staff)).name : 'None'}`)
-                        .setRequired(true)
             ]}),
             new MessageActionRow({
                 components: [
@@ -25,7 +24,6 @@ module.exports = async (client, interaction, data) => {
                         .setMinLength(1)
                         .setMaxLength(100)
                         .setPlaceholder(`Category ID | Current: ${data.guild.modules.tickets.category ? (await client.resolveChannel(interaction.guild.id, data.guild.modules.tickets.category)).name : 'None'}`)
-                        .setRequired(true)
             ]}),
             new MessageActionRow({
                 components: [
@@ -52,12 +50,12 @@ module.exports = async (client, interaction, data) => {
         const category = submitted.fields.getTextInputValue('tscategory');
         const channel = submitted.fields.getTextInputValue('tstranscriptchannel');
 
-        if (!await client.resolveRole(interaction.guild.id, role)) return await submitted.followUp(`I could not find the role you provided.`)
-        if (!await client.resolveChannel(interaction.guild.id, category)) return await submitted.followUp(`I could not find the category you provided.`)
+        if (role && !await client.resolveRole(interaction.guild.id, role)) return await submitted.followUp(`I could not find the role you provided.`)
+        if (category && !await client.resolveChannel(interaction.guild.id, category)) return await submitted.followUp(`I could not find the category you provided.`)
         if (channel && !await client.resolveChannel(interaction.guild.id, channel)) return await submitted.followUp(`I could not find the channel you provided.`)
 
-        data.guild.modules.tickets.staff = role;
-        data.guild.modules.tickets.category = category;
+        if (role) data.guild.modules.tickets.staff = role;
+        if (category) data.guild.modules.tickets.category = category;
         if (channel) data.guild.modules.tickets.transcriptChannel = channel;
         data.guild.markModified("modules.tickets");
         await data.guild.save();

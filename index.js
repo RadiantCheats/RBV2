@@ -8,11 +8,8 @@ class Radiant extends Client {
     constructor() {
         super({ intents: 32767 });
         this.commands = new Collection();
-        this.slashcategories = [];
-        this.cmdcategories = [];
-        this.slashcommands = new Collection();
-        this.commands = new Collection();
-
+        this.categories = [];
+        
         this.config = config;
         this.customEmojis = require('./assets/emojis');
 

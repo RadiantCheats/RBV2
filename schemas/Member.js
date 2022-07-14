@@ -4,6 +4,7 @@ const memberSchema = new mongoose.Schema({
     id: { type: String },
     gid: { type: String },
     other: { type: Object, default: {
+        ticketrules: false,
         ticket: null,
         ticketban: {
             banned: false,

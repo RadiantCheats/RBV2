@@ -4,6 +4,7 @@ const config = require("../config");
 
 const guildSchema = new mongoose.Schema({
     id: { type: String },
+    prefix: { type: String, default: '!' },
     modules: { type: Object, default: {
         autorole: {
             enabled: false,

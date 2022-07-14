@@ -1,4 +1,5 @@
 const { MessageActionRow, MessageSelectMenu, MessageEmbed, MessageButton } = require('discord.js');
+const perms = require('../../assets/perms.js');
 
 module.exports = {
     name: "help",
@@ -15,19 +16,19 @@ module.exports = {
     
     run: async (client, interaction, args, data) => {
         if (args[0]) {
-            const command = client.slashcommands.get(args[0]);
+            const command = client.commands.get(args[0]);
             if (!command) return interaction.reply({ content: `Command \`${args[0]}\` not found.`, ephemeral: true });
             const embed = new MessageEmbed()
                 .setColor(client.config.color)
                 .setTitle(`${command.category.charAt(0).toUpperCase() + command.category.slice(1)} Command: ${command.name}`)
-                .setDescription(`Name: \`${command.name}\`\nDescription: \`${command.description}\`\nCategory: \`${command.category}\`\nPermissions: \`${!command.permissions ? "None" : command.permissions}\``)
+                .setDescription(`Name: \`${command.name}\`\nDescription: \`${command.description}\`\nCategory: \`${command.category}\`\nPermissions: \`${!command.perms ? (perms[command.category] ? perms[command.category] : "None") : command.perms}\``)
             return interaction.reply({ embeds: [embed] });
         }
         const menu = new MessageSelectMenu()
             .setCustomId('helpmenu')
             .setPlaceholder('Select a category')
             .addOptions(
-                await client.slashcategories.filter((c) => !["developer", "owner"].includes(c)).map((category) => {
+                await client.categories.filter((c) => !["developer", "owner"].includes(c)).map((category) => {
                     return {
                         label: `${client.customEmojis[category]} ${category.charAt(0).toUpperCase() + category.slice(1)}`,
                         value: `${category}`,
@@ -58,13 +59,13 @@ module.exports = {
     
         collector.on('collect', async (i) => {
             const [cat] = i.values;
-            const category = client.slashcategories.find((category) => category === cat);
+            const category = client.categories.find((category) => category === cat);
 
             const embed = new MessageEmbed()
                 .setColor(client.config.color)
                 .setTitle(`${category.charAt(0).toUpperCase() + category.slice(1)} Commands`)
                 .addFields(
-                    await client.slashcommands.filter((cmd) => cmd.category === category).map((command) => {
+                    await client.commands.filter((cmd) => cmd.category === category).map((command) => {
                         return {
                             name: `\`${command.name}\``,
                             value: command.description,

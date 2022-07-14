@@ -13,6 +13,7 @@ module.exports = {
                 { name: "Autorole", value: "autorole" },
                 { name: "Ticket System", value: "ticket" },
                 { name: "Ticket Rules", value: "ticketrules" },
+                { name: "Member Counter", value: "membercounter" },
             ]
         }
     ],
@@ -23,6 +24,7 @@ module.exports = {
             case "autorole": { return require('../settings/AutoRole')(client, interaction, data) }
             case "ticket": { return require('../settings/TicketSystem')(client, interaction, data) }
             case "ticketrules": { return require('../settings/TicketRules')(client, interaction, data) }
+            case "membercounter": { return require('../settings/MemberCounter')(client, interaction, data) }
         }
     },
 };

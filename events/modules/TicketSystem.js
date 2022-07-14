@@ -205,7 +205,7 @@ module.exports = async (client, interaction, data) => {
         }
     }
     if (interaction.customId.startsWith('ticketdelete')) {
-        interaction.message?.delete()
+        try {interaction.message?.delete()} catch {}
         interaction.channel.send(`Processing messages...`).then(m => {
             setTimeout(function () {
                 m.edit(`Deleting channel...`)
@@ -216,7 +216,7 @@ module.exports = async (client, interaction, data) => {
         }, 2000)
     }
     if (interaction.customId.startsWith('ticketcancel')) {
-        interaction.message?.delete()
+        try {interaction.message?.delete()} catch {}
 
         const member = interaction.guild.members.cache.get(mod.collection[interaction.channel.id].owner);
         interaction.channel.permissionOverwrites.edit(member, {
@@ -244,5 +244,12 @@ module.exports = async (client, interaction, data) => {
                 }, 5000)
             } catch { }
         })
+    }
+    if (interaction.customId.startsWith('ticketrules')) {
+        if (data.member.other.ticketrules) return interaction.error("You have already agreed to the rules!", true)
+        data.member.other.ticketrules = true;
+        data.member.markModified('other.ticketrules');
+        await data.member.save();
+        return interaction.success("You have agreed to the ticket rules and can now open a ticket.", true)
     }
 }

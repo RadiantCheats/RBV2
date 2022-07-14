@@ -1,5 +1,5 @@
 module.exports = {
-    "admin": "",
+    "admin": "MANAGE_GUILD",
     "developer": ['759156960775110666'],
     "info": "",
     "settings": "",

@@ -10,7 +10,7 @@ module.exports = {
         }
         // Slash Command Handling
         if (interaction.isCommand()) {
-            const cmd = client.slashcommands.get(interaction.commandName);
+            const cmd = client.commands.get(interaction.commandName);
             if (!cmd) return interaction.followUp({ content: "An error has occurred using this command." });
 
             if (!await PermsChecker(interaction, cmd)) return;
@@ -37,7 +37,7 @@ module.exports = {
         // Context Menu Handling
         if (interaction.isContextMenu()) {
             await interaction.deferReply({ ephemeral: false });
-            const command = client.slashCommands.get(interaction.commandName);
+            const command = client.commands.get(interaction.commandName);
             if (command) command.run(client, interaction);
         }
 

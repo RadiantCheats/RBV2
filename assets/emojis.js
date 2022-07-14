@@ -6,4 +6,5 @@ module.exports = {
     "info": "❔",
     "tickets": "🎫",
     "tools": "🛠️",
+    "faq": "📚",
 }
