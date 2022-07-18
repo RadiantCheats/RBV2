@@ -4,10 +4,7 @@
 
 # RBV2
 
-*not finished*
-
 RBV2 is the second instance of RadiantBot which is used in RadiantCheats' servers. Made with [discord.js](https://github.com/discordjs/discord.js).
-__*no leeching pls :)*__
 
 ## Features
 

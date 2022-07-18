@@ -171,7 +171,7 @@ module.exports = async (client, interaction, data) => {
         if (!mod.transcriptChannel) {
             return interaction.error("There was no transcript channel for me to send the transcript to! Please set this up with the settings command!")
         } else {
-            let ticketMessages = await (interaction.channel.messages.cache.toJSON()).reverse();
+            let ticketMessages = await (interaction.channel.messages.cache.toJSON())
             let msgs = "";
             try {
                 ticketMessages.forEach((msg) => {

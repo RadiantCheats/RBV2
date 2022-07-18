@@ -25,7 +25,12 @@ const guildSchema = new mongoose.Schema({
             category: null,
             transcriptChannel: null,
             count: 0,
-            collection: {},
+            collection: { type: Object, default: {} },
+        },
+        reactionroles: {
+            enabled: false,
+            message: null,
+            roles: []
         }
     }},
 })

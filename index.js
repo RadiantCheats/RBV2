@@ -63,9 +63,7 @@ class Radiant extends Client {
     async resolveRole(gid, rid) {const guild = await this.resolveGuild(gid); if (!guild) return null; return guild.roles.cache.get(rid) }
     async resolveChannel(gid, cid) { const guild = await this.resolveGuild(gid); if (!guild) return null; return guild.channels.cache.get(cid) }
 }
-
 const client = new Radiant();
-
 client.on("disconnect", () => console.log("Bot is disconnecting..."))
     .on("reconnecting", () => console.log("Bot reconnecting..."))
 	.on("error", (e) => console.log(e))

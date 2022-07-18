@@ -28,9 +28,9 @@ module.exports = {
             .setCustomId('helpmenu')
             .setPlaceholder('Select a category')
             .addOptions(
-                await client.categories.filter((c) => !["developer", "owner"].includes(c)).map((category) => {
+                await client.categories.filter((c) => !perms.developer.includes(interaction.user.id) ? !["developer", "owner"].includes(c) : c).filter((c) => !interaction.member.permissions.has(perms.staff) ? !["staff", "tickets", "admin"].includes(c) : c).map((category) => {
                     return {
-                        label: `${client.customEmojis[category]} ${category.charAt(0).toUpperCase() + category.slice(1)}`,
+                        label: `${client.customEmojis[category] || ''} ${category.charAt(0).toUpperCase() + category.slice(1)}`,
                         value: `${category}`,
                         description: `View all commands in the ${category.charAt(0).toUpperCase() + category.slice(1)} category.`,
                     }
