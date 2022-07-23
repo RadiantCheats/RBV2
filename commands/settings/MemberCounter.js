@@ -53,6 +53,6 @@ module.exports = async (client, interaction, data) => {
 
         await submitted.followUp(`Autorole settings updated.`)
     } else {
-        await submitted.followUp(`You took too long to respond.`)
+        await submitted.reply(`You took too long to respond.`)
     }
 }
